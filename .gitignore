@@ -1,0 +1,5 @@
+/build/
+/main/components/
+/managed_components/
+*.swp
+*.lock

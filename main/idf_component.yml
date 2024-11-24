@@ -1,0 +1,19 @@
+dependencies:
+  espressif/cmake_utilities:
+    path: components/espressif/cmake_utilities
+  espressif/led_strip:
+    path: components/espressif/led_strip
+  espressif/es7210: #"^1.0.0"
+    path: components/espressif/es7210
+  espressif/es8311: #"^1.0.0"
+    path: components/espressif/es8311
+  espressif/button: #"^1.0.0"
+    path: components/espressif/button
+  
+  espressif/esp32_s3_korvo_1:
+    path: components/espressif/esp32_s3_korvo_1
+    rules:
+      - if: "target in [esp32s3]"
+  ## Required IDF version
+  idf:
+    version: ">=5.0"
