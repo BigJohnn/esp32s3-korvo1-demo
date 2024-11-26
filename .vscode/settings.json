@@ -17,6 +17,13 @@
     "idf.gitPathWin": "d:\\Codes\\esp\\.espressif\\tools\\idf-git\\2.39.2\\cmd\\git.exe",
     "files.associations": {
         "esp_codec_dev_defaults.h": "c",
-        "esp32_s3_korvo_1.h": "c"
+        "esp32_s3_korvo_1.h": "c",
+        "sdkconfig.h": "c",
+        "example_config.h": "c",
+        "es7210.h": "c",
+        "es8311.h": "c",
+        "esp-bsp.h": "c",
+        "wav_def.h": "c",
+        "stdio.h": "c"
     }
 }

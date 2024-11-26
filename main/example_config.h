@@ -7,6 +7,7 @@
 #pragma once
 
 #include "sdkconfig.h"
+#include "wav_def.h"
 
 /* Example configurations */
 #define EXAMPLE_RECV_BUF_SIZE   (2400)
@@ -18,47 +19,28 @@
 #define EXAMPLE_MIC_GAIN        CONFIG_EXAMPLE_MIC_GAIN
 #endif
 
-#if !defined(CONFIG_EXAMPLE_BSP)
+#define DEFAULT_VOLUME  (100)
 
-/* I2C port and GPIOs */
-#define I2C_NUM         (0)
-#if CONFIG_IDF_TARGET_ESP32 || CONFIG_IDF_TARGET_ESP32S2 || CONFIG_IDF_TARGET_ESP32S3
-#define I2C_SCL_IO      (GPIO_NUM_16)
-#define I2C_SDA_IO      (GPIO_NUM_17)
-#elif CONFIG_IDF_TARGET_ESP32H2
-#define I2C_SCL_IO      (GPIO_NUM_8)
-#define I2C_SDA_IO      (GPIO_NUM_9)
-#elif CONFIG_IDF_TARGET_ESP32P4
-#define I2C_SCL_IO      (GPIO_NUM_8)
-#define I2C_SDA_IO      (GPIO_NUM_7)
-#else
-#define I2C_SCL_IO      (GPIO_NUM_6)
-#define I2C_SDA_IO      (GPIO_NUM_7)
-#endif
+#define EXAMPLE_SD_MOUNT_POINT     "/sdcard"
+
+#define BUFFER_SIZE     (1024)
+#define RECORDING_LENGTH (160)
+
+#define EXAMPLE_I2C_NUM            (0)
+#define EXAMPLE_I2C_SDA_IO         (1)
+#define EXAMPLE_I2C_SCL_IO         (2)
 
 /* I2S port and GPIOs */
-#define I2S_NUM         (0)
-#if CONFIG_IDF_TARGET_ESP32P4
-#define I2S_MCK_IO      (GPIO_NUM_13)
-#define I2S_BCK_IO      (GPIO_NUM_12)
-#define I2S_WS_IO       (GPIO_NUM_10)
-#define I2S_DO_IO       (GPIO_NUM_11)
-#define I2S_DI_IO       (GPIO_NUM_9)
-#else
-#define I2S_MCK_IO      (GPIO_NUM_0)
-#define I2S_BCK_IO      (GPIO_NUM_4)
-#define I2S_WS_IO       (GPIO_NUM_5)
-#if CONFIG_IDF_TARGET_ESP32 || CONFIG_IDF_TARGET_ESP32S2 || CONFIG_IDF_TARGET_ESP32S3
-#define I2S_DO_IO       (GPIO_NUM_18)
-#define I2S_DI_IO       (GPIO_NUM_19)
-#else
-#define I2S_DO_IO       (GPIO_NUM_2)
-#define I2S_DI_IO       (GPIO_NUM_3)
-#endif
-#endif
+#define EXAMPLE_I2S_NUM            (0)
+#define EXAMPLE_I2S_MCK_IO         (20)
+#define EXAMPLE_I2S_BCK_IO         (10)
+#define EXAMPLE_I2S_WS_IO          (9)
+#define EXAMPLE_I2S_DI_IO          (11)
 
-#else // CONFIG_EXAMPLE_BSP
+/* SD card SPI GPIOs */
+#define EXAMPLE_SD_SPI_CLK_IO      (18)
+#define EXAMPLE_SD_SPI_MOSI_IO     (17)
+#define EXAMPLE_SD_SPI_MISO_IO     (16)
+#define EXAMPLE_SD_SPI_CS_IO       (15)
 #include "bsp/esp-bsp.h"
 #define I2C_NUM BSP_I2C_NUM
-
-#endif // CONFIG_EXAMPLE_BSP
