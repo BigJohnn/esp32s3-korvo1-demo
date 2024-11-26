@@ -26,43 +26,44 @@ esp_err_t player_spk_init()
 esp_err_t player_play_wav(const char* play_filename)
 {
     int16_t *wav_bytes = malloc(BUFFER_SIZE);
-                assert(wav_bytes != NULL);
+    assert(wav_bytes != NULL);
 
-                /* Open WAV file */
-                ESP_LOGI(TAG, "Playing file %s", play_filename);
-                FILE *play_file = fopen(play_filename, "rb");
-                if (play_file == NULL) {
-                    ESP_LOGW(TAG, "%s file does not exist!", play_filename);
-                    // break;
-                }
+    /* Open WAV file */
+    ESP_LOGI(TAG, "Playing file %s", play_filename);
+    FILE *play_file = fopen(play_filename, "rb");
+    if (play_file == NULL) {
+        ESP_LOGW(TAG, "%s file does not exist!", play_filename);
+        // break;
+    }
 
-                /* Read WAV header file */
-                dumb_wav_header_t wav_header;
-                if (fread((void *)&wav_header, 1, sizeof(wav_header), play_file) != sizeof(wav_header)) {
-                    ESP_LOGW(TAG, "Error in reading file");
-                    // break;
-                }
-                ESP_LOGI(TAG, "Number of channels: %" PRIu16 "", wav_header.num_channels);
-                ESP_LOGI(TAG, "Bits per sample: %" PRIu16 "", wav_header.bits_per_sample);
-                ESP_LOGI(TAG, "Sample rate: %" PRIu32 "", wav_header.sample_rate);
-                ESP_LOGI(TAG, "Data size: %" PRIu32 "", wav_header.data_size);
+    /* Read WAV header file */
+    dumb_wav_header_t wav_header;
+    if (fread((void *)&wav_header, 1, sizeof(wav_header), play_file) != sizeof(wav_header)) {
+        ESP_LOGW(TAG, "Error in reading file");
+        // break;
+    }
+    ESP_LOGI(TAG, "Number of channels: %" PRIu16 "", wav_header.num_channels);
+    ESP_LOGI(TAG, "Bits per sample: %" PRIu16 "", wav_header.bits_per_sample);
+    ESP_LOGI(TAG, "Sample rate: %" PRIu32 "", wav_header.sample_rate);
+    ESP_LOGI(TAG, "Data size: %" PRIu32 "", wav_header.data_size);
 
-                esp_codec_dev_sample_info_t fs = {
-                    .sample_rate = wav_header.sample_rate,
-                    .channel = wav_header.num_channels,
-                    .bits_per_sample = wav_header.bits_per_sample,
-                };
-                esp_codec_dev_open(spk_codec_dev, &fs);
+    esp_codec_dev_sample_info_t fs = {
+        .sample_rate = wav_header.sample_rate,
+        .channel = wav_header.num_channels,
+        .bits_per_sample = wav_header.bits_per_sample,
+    };
+    esp_codec_dev_open(spk_codec_dev, &fs);
 
-                uint32_t bytes_send_to_i2s = 0;
-                while (bytes_send_to_i2s < wav_header.data_size) {
-                    /* Get data from SPIFFS and send it to codec */
-                    size_t bytes_read_from_spiffs = fread(wav_bytes, 1, BUFFER_SIZE, play_file);
-                    esp_codec_dev_write(spk_codec_dev, wav_bytes, bytes_read_from_spiffs);
-                    bytes_send_to_i2s += bytes_read_from_spiffs;
-                }
-                fclose(play_file);
-                free(wav_bytes);
+    uint32_t bytes_send_to_i2s = 0;
+    while (bytes_send_to_i2s < wav_header.data_size) {
+        size_t bytes_read = fread(wav_bytes, 1, BUFFER_SIZE, play_file);
+
+        if(0 == bytes_read) break;
+        esp_codec_dev_write(spk_codec_dev, wav_bytes, bytes_read);
+        bytes_send_to_i2s += bytes_read;
+    }
+    fclose(play_file);
+    free(wav_bytes);
                 // esp_codec_dev_close(spk_codec_dev);
     return ESP_OK;
 }

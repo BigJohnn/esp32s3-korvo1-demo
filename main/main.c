@@ -22,15 +22,18 @@ static const char *TAG = "korvo1-main";
 
 void app_main(void)
 {
-    ESP_ERROR_CHECK(bsp_spiffs_mount());
-
+    // ESP_ERROR_CHECK(bsp_spiffs_mount());
+    bsp_sdcard_mount();
     recorder_mic_init();
     player_spk_init();
 
-    const char recording_filename[] = BSP_SPIFFS_MOUNT_POINT"/recording.wav";
+    // const char recording_filename[] = BSP_SPIFFS_MOUNT_POINT"/recording.wav";
+    const char recording_filename[] = BSP_SD_MOUNT_POINT"/record.wav";
     recorder_record_wav(recording_filename);
     player_play_wav(recording_filename);
     player_play_canon();
+
+    bsp_sdcard_unmount();
 
     /* Configure the peripheral according to the LED type */
     configure_led();

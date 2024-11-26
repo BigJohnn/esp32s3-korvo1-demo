@@ -24,7 +24,7 @@
 #define EXAMPLE_SD_MOUNT_POINT     "/sdcard"
 
 #define BUFFER_SIZE     (1024)
-#define RECORDING_LENGTH (160)
+#define RECORDING_LENGTH (320)
 
 #define EXAMPLE_I2C_NUM            (0)
 #define EXAMPLE_I2C_SDA_IO         (1)
